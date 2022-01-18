@@ -1,0 +1,37 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data.OleDb;
+
+namespace WebApplication1
+{
+    public partial class verisil : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                OleDbConnection baglan = new OleDbConnection("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + Server.MapPath(@"App_Data\data.accdb"));
+                baglan.Open();
+                OleDbCommand komut = new OleDbCommand("delete from uyeler where adi=isim", baglan);
+                komut.Parameters.AddWithValue("isim", txtAd.Text);
+                komut.ExecuteNonQuery();
+                baglan.Close();
+                lblSonuc.Text = "Sil işlemi gerçekleşti";
+            }
+            catch (Exception hata)
+            {
+
+                lblSonuc.Text = "Bağlantı hatası oluştu" + hata.Message;
+            }
+        }
+    }
+}
